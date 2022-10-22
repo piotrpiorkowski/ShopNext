@@ -14,6 +14,11 @@ const Header = () => {
             About
           </a>
         </Link>
+        <Link href="/products">
+          <a className={router.pathname == "/products" ? "bg-blue-600" : ""}>
+            Produkty
+          </a>
+        </Link>
       </nav>
     </header>
   );
