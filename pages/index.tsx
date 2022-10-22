@@ -1,7 +1,7 @@
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import Main from "../components/Main";
-import Product from "../components/Products";
+import ProductDetails from "../components/Products";
 
 const data = {
   description: `There are many variations of passages of Lorem Ipsum available, but
@@ -24,9 +24,7 @@ const Home = () => {
   return (
     <div className="flex flex-col min-h-screen bg-teal-100">
       <Header />
-      <Main>
-        <Product data={data} />
-      </Main>
+      <Main>{/* <Product data={data} /> */}</Main>
       <Footer />
     </div>
   );
