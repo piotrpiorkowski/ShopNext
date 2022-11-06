@@ -1,7 +1,7 @@
 import { GetStaticPropsContext, InferGetServerSidePropsType } from "next";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import ProductDetails from "../../components/Products";
+import { serialize } from "next-mdx-remote/serialize";
 
 const ProductIdPage = ({
   data,
@@ -60,9 +60,20 @@ export const getStaticProps = async ({
   );
   const data: StoreApiResponse | null = await res.json();
 
+  if (!data) {
+    return {
+      props: {},
+      notFound: true,
+    };
+  }
+
+  // ustawienia dla markdowna (opcjonalne w inych projektCH) bez tego powinno byc w return props: { data,  },
   return {
     props: {
-      data,
+      data: {
+        ...data,
+        longDescription: await serialize(data.longDescription),
+      },
     },
   };
 };

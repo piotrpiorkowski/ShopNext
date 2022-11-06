@@ -1,9 +1,10 @@
 import { NextSeo } from "next-seo";
-import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import ReactMarkdown from "react-markdown";
+import { MarkdownResult } from "../utils";
+import { useCartState } from "./Cart/CartContex";
 import Rating from "./Rating";
+import ZaisteReactMarkdown from "./ZaisteReactMarkdown";
 
 interface ProductDetails {
   id: number;
@@ -12,7 +13,7 @@ interface ProductDetails {
   thumbnailUrl: string;
   thumbnailAlt: string;
   rating: number;
-  longDescription: string;
+  longDescription: MarkdownResult;
 }
 
 interface ProductProps {
@@ -52,8 +53,8 @@ const ProductDetails = ({ data }: ProductProps) => {
       </div>
       <h2 className="p-4 text-3xl font-bold">{data.title}</h2>
       <p className="p-4">{data.description}</p>
-      <article className="prose lg:prose-xl">
-        <ReactMarkdown className="p-4">{data.longDescription}</ReactMarkdown>
+      <article className="p-4 prose lg:prose-xl">
+        <ZaisteReactMarkdown>{data.longDescription}</ZaisteReactMarkdown>
       </article>
       <Rating rating={data.rating} />
     </>
@@ -71,6 +72,7 @@ interface ProductListItemProps {
   data: ProductListItem;
 }
 export const ProductListItem = ({ data }: ProductListItemProps) => {
+  const cartState = useCartState();
   return (
     <>
       <div className="bg-white">
@@ -83,11 +85,26 @@ export const ProductListItem = ({ data }: ProductListItemProps) => {
           objectFit="contain"
         />
       </div>
-      <Link href={`/products/${data.id}`}>
-        <a>
-          <h2 className="p-4 text-3xl font-bold">{data.title}</h2>
-        </a>
-      </Link>
+      <div className="p-4">
+        <Link href={`/products/${data.id}`}>
+          <a>
+            <h2 className="pb-4 text-3xl font-bold">{data.title}</h2>
+          </a>
+        </Link>
+        <button
+          onClick={() =>
+            cartState.addItemToCart({
+              id: data.id,
+              price: 21.37,
+              title: data.title,
+              count: 1,
+            })
+          }
+          className="text-white bg-blue-500 rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+        >
+          Dodaj do koszyka
+        </button>
+      </div>
     </>
   );
 };
