@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
+import CartBar from "./Cart/CartBar";
 
 const Header = () => {
   const router = useRouter();
   return (
-    <header className="max-w-5xl mx-auto w-full ">
-      <nav className="bg-gray-700 px-4 py-2 text-white">
+    <header className="max-w-5xl px-4 mx-auto w-full flex items-center justify-between bg-gray-700">
+      <nav className="py-2 text-white">
         <Link href="/">
           <a className={router.pathname == "/" ? "bg-blue-600" : ""}>Główna</a>
         </Link>
@@ -20,6 +21,7 @@ const Header = () => {
           </a>
         </Link>
       </nav>
+      <CartBar />
     </header>
   );
 };

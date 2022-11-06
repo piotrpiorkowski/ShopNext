@@ -1,7 +1,7 @@
 import { GetStaticPropsContext, InferGetServerSidePropsType } from "next";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import ProductDetails from "../../components/Products";
+import { serialize } from "next-mdx-remote/serialize";
 
 const ProductIdPage = ({
   data,
@@ -22,6 +22,7 @@ const ProductIdPage = ({
           thumbnailAlt: data.title,
           description: data.description,
           rating: data.rating.rate,
+          longDescription: data.longDescription,
         }}
       />
     </div>
@@ -31,7 +32,7 @@ const ProductIdPage = ({
 export default ProductIdPage;
 
 export const getStaticPaths = async () => {
-  const res = await fetch(`https://fakestoreapi.com/products`);
+  const res = await fetch(`https://naszsklep-api.vercel.app/api/products`);
   const data: StoreApiResponse[] = await res.json();
   return {
     paths: data.map((product) => {
@@ -55,13 +56,24 @@ export const getStaticProps = async ({
     };
   }
   const res = await fetch(
-    `https://fakestoreapi.com/products/${params.productId}`
+    `https://naszsklep-api.vercel.app/api/products/${params.productId}`
   );
   const data: StoreApiResponse | null = await res.json();
 
+  if (!data) {
+    return {
+      props: {},
+      notFound: true,
+    };
+  }
+
+  // ustawienia dla markdowna (opcjonalne w inych projektCH) bez tego powinno byc w return props: { data,  },
   return {
     props: {
-      data,
+      data: {
+        ...data,
+        longDescription: await serialize(data.longDescription),
+      },
     },
   };
 };
@@ -77,4 +89,5 @@ export interface StoreApiResponse {
     rate: number;
     count: number;
   };
+  longDescription: string;
 }
