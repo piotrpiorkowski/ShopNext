@@ -7,7 +7,7 @@ import Rating from "./Rating";
 import ZaisteReactMarkdown from "./ZaisteReactMarkdown";
 
 interface ProductDetails {
-  id: number;
+  id: string;
   title: string;
   description: string;
   thumbnailUrl: string;
