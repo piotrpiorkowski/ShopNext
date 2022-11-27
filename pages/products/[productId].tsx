@@ -39,8 +39,6 @@ const ProductIdPage = ({
 };
 
 export default ProductIdPage;
-
-//SSG
 export const getStaticPaths = async () => {
   const { data } = await apolloClient.query<GetProductsSlugsQuery>({
     query: GetProductsSlugsDocument,
