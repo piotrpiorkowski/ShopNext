@@ -9,7 +9,7 @@ import {
   GetProductsSlugsDocument,
   GetProductsSlugsQuery,
 } from "../../generated/graphql";
-import ProductDetails from "../../components/Products";
+import { ProductDetails } from "../../components/Products";
 
 const ProductIdPage = ({
   data,
@@ -26,6 +26,7 @@ const ProductIdPage = ({
       <ProductDetails
         data={{
           id: data.slug,
+          slug: data.slug,
           title: data.name,
           thumbnailAlt: data.name,
           thumbnailUrl: data.images[0].url,
