@@ -3,11 +3,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { MarkdownResult } from "../utils";
 import { useCartState } from "./Cart/CartContex";
+import { ProductReviewContainer } from "./ProductReview/ProductReviewContainer";
 import Rating from "./Rating";
 import ZaisteReactMarkdown from "./ZaisteReactMarkdown";
 
 interface ProductDetails {
   id: string;
+  slug: string;
   title: string;
   description: string;
   thumbnailUrl: string;
@@ -20,7 +22,7 @@ interface ProductProps {
   data: ProductDetails;
 }
 
-const ProductDetails = ({ data }: ProductProps) => {
+export const ProductDetails = ({ data }: ProductProps) => {
   return (
     <>
       <div className="bg-white p-4">
@@ -57,11 +59,10 @@ const ProductDetails = ({ data }: ProductProps) => {
         <ZaisteReactMarkdown>{data.longDescription}</ZaisteReactMarkdown>
       </article>
       <Rating rating={data.rating} />
+      <ProductReviewContainer productSlug={data.slug} />
     </>
   );
 };
-
-export default ProductDetails;
 
 type ProductListItem = Pick<
   ProductDetails,
