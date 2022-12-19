@@ -19,6 +19,7 @@ export const ProductReviewList = ({ productSlug }: ProductReviewListProps) => {
     return null;
   }
 
+  //items
   return (
     <ul>
       {data.product.reviews.map((review, i) => (
