@@ -1,7 +1,41 @@
+import { loadStripe } from "@stripe/stripe-js";
 import { useCartState } from "../components/Cart/CartContex";
+import Stripe from "stripe";
+
+const stripePromise = loadStripe(
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
+);
 
 const CartContent = () => {
   const cartState = useCartState();
+
+  const pay = async () => {
+    const stripe = await stripePromise;
+
+    if (!stripe) {
+      throw new Error(`Something went wrong`);
+    }
+
+    const res = await fetch("/api/checkout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(
+        cartState.items?.map((cartItem) => {
+          return {
+            slug: cartItem.id,
+            count: cartItem.count,
+          };
+        })
+      ),
+    });
+
+    const { session }: { session: Stripe.Response<Stripe.Checkout.Session> } =
+      await res.json();
+
+    await stripe.redirectToCheckout({ sessionId: session.id });
+  };
 
   return (
     <div className="col-span-2">
@@ -34,6 +68,13 @@ const CartContent = () => {
           </li>
         ))}
       </ul>
+      <button
+        type="button"
+        onClick={pay}
+        className=" w-full bg-indigo-600 border border-transparent h-12 rounded-lg text-white"
+      >
+        Złóż zamówienie
+      </button>
     </div>
   );
 };
