@@ -4,6 +4,12 @@ mutation CreateProductReview($review: ReviewCreateInput!) {
   }
 }
 
+mutation CreateAccount($email: String!, $password: String!) {
+  createAccount(data: { email: $email, password: $password }) {
+    id
+  }
+}
+
 # mutation CreateCheckout($checkout: CheckoutCreateInput!) {
 #   createCheckout(data: $checkout) {
 #     id

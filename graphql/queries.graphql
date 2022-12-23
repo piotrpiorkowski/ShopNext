@@ -55,3 +55,11 @@ query GetProductBySlug($slug: String!) {
     }
   }
 }
+
+query GetAccountByEmail($email: String!) {
+  account(where: { email: $email }, stage: DRAFT) {
+    id
+    email
+    password
+  }
+}
