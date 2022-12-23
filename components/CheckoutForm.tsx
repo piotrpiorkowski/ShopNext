@@ -48,7 +48,7 @@ const CheckoutForm = () => {
   const methods = useForm<CheckoutFormData>({
     resolver: yupResolver(schema),
   });
-
+  //test
   const onSubmit = (data: CheckoutFormData) => console.log(data);
 
   return (
